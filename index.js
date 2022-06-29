@@ -12,18 +12,29 @@ const getPosition = async function () {
     const dataPos = await new Promise(function (resolve, reject) {
       window.navigator.geolocation.getCurrentPosition(resolve, reject);
     });
-    if (!dataPos) throw new Error(`location not found`);
+    if (!dataPos) {
+      errorMsg.classList.remove("hidden");
+
+      throw new Error(`location not found`);
+    }
+    errorMsg.classList.add("hidden");
     const { latitude, longitude } = dataPos.coords;
     const res = await fetch(
       `https://geocode.xyz/${latitude},${longitude}?geoit=json`
     );
-    if (!res.ok) throw new Error(`error converting coords`);
+
+    if (!res.ok) {
+      errorMsg.classList.remove("hidden");
+      throw new Error(`error converting coords`);
+    }
+    errorMsg.classList.add("hidden");
     const data = await res.json();
     const { city } = data;
 
     return city;
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
+    errorMsg.classList.remove("hidden");
   }
 };
 const renderError = function () {};
@@ -53,6 +64,8 @@ const getWeather = async function (city) {
     return parameters;
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
+
+    errorMsg.classList.remove("hidden");
     throw err;
   }
 };
@@ -65,6 +78,8 @@ const init = async function () {
     render(data);
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
+
+    errorMsg.classList.remove("hidden");
   }
 };
 const render = function (data) {
@@ -92,7 +107,7 @@ submit.addEventListener("click", function (e) {
 const search = async function () {
   try {
     if (searchBar.value == "") return;
-    console.log(searchedCities);
+
     const city = searchBar.value.toLowerCase();
     searchBar.value = "";
     if (searchedCities.includes(city)) {
@@ -105,5 +120,7 @@ const search = async function () {
     render(data);
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
+
+    errorMsg.classList.remove("hidden");
   }
 };
