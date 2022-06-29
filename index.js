@@ -100,7 +100,7 @@ const render = function (data) {
   </div>
 </div>
     `;
-  parentEL.insertAdjacentHTML("beforeend", html);
+  parentEL.insertAdjacentHTML("afterbegin", html);
 };
 
 init();
