@@ -13,7 +13,7 @@ const getPosition = async function () {
       window.navigator.geolocation.getCurrentPosition(resolve, reject);
     });
     if (!dataPos) {
-      errorMsg.classList.remove("hidden");
+     
 
       throw new Error(`location not found`);
     }
@@ -34,7 +34,7 @@ const getPosition = async function () {
     return city;
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
-    errorMsg.classList.remove("hidden");
+  
   }
 };
 const renderError = function () {};
@@ -65,7 +65,7 @@ const getWeather = async function (city) {
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
 
-    errorMsg.classList.remove("hidden");
+   
     throw err;
   }
 };
@@ -79,7 +79,7 @@ const init = async function () {
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
 
-    errorMsg.classList.remove("hidden");
+ 
   }
 };
 const render = function (data) {
@@ -121,6 +121,5 @@ const search = async function () {
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
 
-    errorMsg.classList.remove("hidden");
   }
 };
