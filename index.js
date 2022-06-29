@@ -13,28 +13,37 @@ const getPosition = async function () {
       window.navigator.geolocation.getCurrentPosition(resolve, reject);
     });
     if (!dataPos) {
-     
+      errorMsg.classList.remove("hidden");
 
       throw new Error(`location not found`);
     }
     errorMsg.classList.add("hidden");
     const { latitude, longitude } = dataPos.coords;
     const res = await fetch(
-      `https://geocode.xyz/${latitude},${longitude}?geoit=json`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
     );
 
     if (!res.ok) {
       errorMsg.classList.remove("hidden");
-      throw new Error(`error converting coords`);
+      throw new Error(`error getting weather data`);
     }
     errorMsg.classList.add("hidden");
     const data = await res.json();
-    const { city } = data;
+    const { name } = data;
+    const { description, icon } = data.weather[0];
+    let { temp } = data.main;
+    temp -= 273.15;
 
-    return city;
+    const parameters = {
+      name,
+      description,
+      icon,
+      temp,
+    };
+
+    return parameters;
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
-  
   }
 };
 const renderError = function () {};
@@ -65,7 +74,6 @@ const getWeather = async function (city) {
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
 
-   
     throw err;
   }
 };
@@ -73,13 +81,10 @@ const getWeather = async function (city) {
 const init = async function () {
   try {
     const city = await getPosition();
-    const data = await getWeather(city);
 
-    render(data);
+    render(city);
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
-
- 
   }
 };
 const render = function (data) {
@@ -120,6 +125,5 @@ const search = async function () {
     render(data);
   } catch (err) {
     console.error(`${err} 🔥🔥🔥`);
-
   }
 };
