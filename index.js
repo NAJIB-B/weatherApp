@@ -92,7 +92,7 @@ const render = function (data) {
   <div class="card">
   <div class="cardItems">
     <p class="name">${data.name}</p>
-    <h3 class="temp">${Math.ceil(data.temp)}°C</h3>
+    <h3 class="temp">${Math.round(data.temp)}°C</h3>
     <p class="cloudIcon"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
   data.icon
 }.svg" alt="" /></p>
